@@ -1,0 +1,6 @@
+/* adding :root to bump specificity in order to fix
+   broken CSS import ordering (for dev env)
+   */
+:root .radix-themes {
+  --default-font-family: var(--font-inter);
+}
