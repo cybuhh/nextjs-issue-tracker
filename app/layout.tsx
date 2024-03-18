@@ -18,8 +18,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // suppressHydrationWarning bug https://github.com/pacocoursey/next-themes?tab=readme-ov-file#with-app
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning>
       <body className={inter.variable}>
         <Theme appearance='light'>
           <NavBar />
