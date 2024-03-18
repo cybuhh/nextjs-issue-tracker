@@ -8,7 +8,8 @@ import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
+import { Callout } from '@radix-ui/themes';
 
 // eslint-disable-next-line react/display-name
 const Editor = forwardRef((props: SimpleMDEReactProps, ref: React.LegacyRef<HTMLDivElement> | undefined) => (
@@ -28,6 +29,7 @@ function NewIssuePage() {
     control,
   } = useForm<IssueForm>();
   const router = useRouter();
+  const [error, setError] = useState('');
 
   const handleControllerRender = ({ field }: { field: ControllerRenderProps<IssueForm, 'description'> }) => {
     return <SimpleMDE placeholder='Description' {...field} />;
@@ -36,17 +38,21 @@ function NewIssuePage() {
     try {
       const response = await fetch('/api/issues', { method: 'post', body: JSON.stringify(data) });
       if (!response.ok) {
-        console.error('error occured', response.status);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       router.push('/issues');
     } catch (e) {
-      console.error(e);
+      setError('An unexpected error occured');
     }
   });
 
   return (
     <form onSubmit={handleFormOnSubmit} className='max-w-xl space-y-3'>
+      {error.length > 0 && (
+        <Callout.Root color='red'>
+          <Callout.Text>{error}</Callout.Text>
+        </Callout.Root>
+      )}
       <TextField.Root>
         <TextField.Input placeholder='Title' {...register('title')} />
       </TextField.Root>
