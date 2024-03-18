@@ -1,20 +1,11 @@
 'use client';
 
-import { TextField, Button } from '@radix-ui/themes';
-import type { SimpleMDEReactProps, SimpleMdeReact } from 'react-simplemde-editor';
 import dynamic from 'next/dynamic';
-const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false });
-import 'easymde/dist/easymde.min.css';
-import { useForm, Controller } from 'react-hook-form';
-import type { ControllerRenderProps } from 'react-hook-form';
+import { TextField, Button } from '@radix-ui/themes';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { forwardRef, useState } from 'react';
+import { useState } from 'react';
 import { Callout } from '@radix-ui/themes';
-
-// eslint-disable-next-line react/display-name
-const Editor = forwardRef((props: SimpleMDEReactProps, ref: React.LegacyRef<HTMLDivElement> | undefined) => (
-  <SimpleMDE {...props} ref={ref} />
-));
 
 interface IssueForm {
   title: string;
@@ -27,13 +18,12 @@ function NewIssuePage() {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<IssueForm>();
+  } = useForm();
   const router = useRouter();
   const [error, setError] = useState('');
 
-  const handleControllerRender = ({ field }: { field: ControllerRenderProps<IssueForm, 'description'> }) => {
-    return <SimpleMDE placeholder='Description' {...field} />;
-  };
+  const Editor = dynamic(() => import('@/app/ui/form/EditorController'), { ssr: false });
+
   const handleFormOnSubmit = handleSubmit(async (data) => {
     try {
       const response = await fetch('/api/issues', { method: 'post', body: JSON.stringify(data) });
@@ -56,7 +46,7 @@ function NewIssuePage() {
       <TextField.Root>
         <TextField.Input placeholder='Title' {...register('title')} />
       </TextField.Root>
-      <Controller name='description' control={control} render={handleControllerRender} />
+      <Editor fieldName='description' control={control} />
       <Button>Submit new issue</Button>
     </form>
   );
