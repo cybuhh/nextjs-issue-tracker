@@ -11,14 +11,15 @@ interface EditorControllerProps<
 > {
   control: Control<TFieldValues>;
   fieldName: TName;
+  placeholder?: string;
 }
 
 export default function EditorController<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->({ control, fieldName }: EditorControllerProps<TFieldValues, TName>) {
+>({ control, fieldName, placeholder }: EditorControllerProps<TFieldValues, TName>) {
   const handleControllerRender = ({ field }: { field: ControllerRenderProps<TFieldValues, TName> }) => {
-    return <SimpleEditor placeholder='Description' {...field} />;
+    return <SimpleEditor placeholder={placeholder} {...field} />;
   };
 
   return <Controller name={fieldName} control={control} render={handleControllerRender} />;

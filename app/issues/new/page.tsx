@@ -46,7 +46,7 @@ function NewIssuePage() {
       <TextField.Root>
         <TextField.Input placeholder='Title' {...register('title')} />
       </TextField.Root>
-      <Editor fieldName='description' control={control} />
+      <Editor fieldName='description' control={control} placeholder='Description' />
       <Button>Submit new issue</Button>
     </form>
   );
