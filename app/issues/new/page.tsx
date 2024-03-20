@@ -1,16 +1,16 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { TextField, Button } from '@radix-ui/themes';
+import { TextField, Button, Text } from '@radix-ui/themes';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Callout } from '@radix-ui/themes';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createIssueSchema } from '@/app/validationSchemas';
+import { z } from 'zod';
 
-interface IssueForm {
-  title: string;
-  description: string;
-}
+type IssueForm = z.infer<typeof createIssueSchema>;
 
 function NewIssuePage() {
   const {
@@ -18,7 +18,7 @@ function NewIssuePage() {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm();
+  } = useForm({ resolver: zodResolver(createIssueSchema) });
   const router = useRouter();
   const [error, setError] = useState('');
 
@@ -46,7 +46,17 @@ function NewIssuePage() {
       <TextField.Root>
         <TextField.Input placeholder='Title' {...register('title')} />
       </TextField.Root>
+      {errors.title && (
+        <Text color='red' as='p'>
+          {errors.title.message as string}
+        </Text>
+      )}
       <Editor fieldName='description' control={control} placeholder='Description' />
+      {errors.description && (
+        <Text as='p' color='red'>
+          {errors.description.message as string}
+        </Text>
+      )}
       <Button>Submit new issue</Button>
     </form>
   );
