@@ -14,6 +14,8 @@ import Spinner from '@/app/components/Spinner';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
+const Editor = dynamic(() => import('@/app/components/EditorController'), { ssr: false });
+
 function NewIssuePage() {
   const {
     register,
@@ -24,8 +26,6 @@ function NewIssuePage() {
   const router = useRouter();
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const Editor = dynamic(() => import('@/app/components/EditorController'), { ssr: false });
 
   const handleFormOnSubmit = handleSubmit(async (data) => {
     try {
