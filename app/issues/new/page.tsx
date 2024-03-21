@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/validationSchemas';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import { z } from 'zod';
+import Spinner from '@/app/components/Spinner';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -22,11 +23,13 @@ function NewIssuePage() {
   } = useForm({ resolver: zodResolver(createIssueSchema) });
   const router = useRouter();
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const Editor = dynamic(() => import('@/app/components/EditorController'), { ssr: false });
 
   const handleFormOnSubmit = handleSubmit(async (data) => {
     try {
+      setIsSubmitting(true);
       const response = await fetch('/api/issues', { method: 'post', body: JSON.stringify(data) });
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -34,6 +37,8 @@ function NewIssuePage() {
       router.push('/issues');
     } catch (e) {
       setError('An unexpected error occured');
+    } finally {
+      setIsSubmitting(false);
     }
   });
 
@@ -50,7 +55,10 @@ function NewIssuePage() {
       <ErrorMessage>{errors.title?.message}</ErrorMessage>
       <Editor name='description' control={control} placeholder='Description' />
       <ErrorMessage>{errors.description?.message}</ErrorMessage>
-      <Button>Submit new issue</Button>
+      <Button disabled={isSubmitting}>
+        Submit new issue
+        {isSubmitting && <Spinner />}
+      </Button>
     </form>
   );
 }
