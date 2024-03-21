@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "ts-watch": "tsc -w",
     "prisma-migrate": "prisma migrate dev",
     "prettier": "prettier -c {app,prisma}/**/*.ts",
     "prettier:fix": "prettier -w {app,prisma}/**/*.ts"

@@ -51,7 +51,7 @@ function NewIssuePage() {
           {errors.title.message as string}
         </Text>
       )}
-      <Editor fieldName='description' control={control} placeholder='Description' />
+      <Editor name='description' control={control} placeholder='Description' />
       {errors.description && (
         <Text as='p' color='red'>
           {errors.description.message as string}
