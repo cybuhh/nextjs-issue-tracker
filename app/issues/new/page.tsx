@@ -2,12 +2,13 @@
 
 import dynamic from 'next/dynamic';
 import { TextField, Button, Text } from '@radix-ui/themes';
-import { useForm } from 'react-hook-form';
+import { FieldValue, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Callout } from '@radix-ui/themes';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/validationSchemas';
+import ErrorMessage from '@/app/components/ErrorMessage';
 import { z } from 'zod';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
@@ -22,7 +23,7 @@ function NewIssuePage() {
   const router = useRouter();
   const [error, setError] = useState('');
 
-  const Editor = dynamic(() => import('@/app/ui/form/EditorController'), { ssr: false });
+  const Editor = dynamic(() => import('@/app/components/EditorController'), { ssr: false });
 
   const handleFormOnSubmit = handleSubmit(async (data) => {
     try {
@@ -46,17 +47,9 @@ function NewIssuePage() {
       <TextField.Root>
         <TextField.Input placeholder='Title' {...register('title')} />
       </TextField.Root>
-      {errors.title && (
-        <Text color='red' as='p'>
-          {errors.title.message as string}
-        </Text>
-      )}
+      <ErrorMessage>{errors.title?.message}</ErrorMessage>
       <Editor name='description' control={control} placeholder='Description' />
-      {errors.description && (
-        <Text as='p' color='red'>
-          {errors.description.message as string}
-        </Text>
-      )}
+      <ErrorMessage>{errors.description?.message}</ErrorMessage>
       <Button>Submit new issue</Button>
     </form>
   );
