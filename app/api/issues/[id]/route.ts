@@ -37,3 +37,19 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
+
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
+  try {
+    const issue = await prisma.issue.findUnique({ where: { id: parseInt(params.id) } });
+    if (!issue) {
+      return NextResponse.json({ error: 'Invalid issue' }, { status: 404 });
+    }
+
+    await prisma.issue.delete({ where: { id: issue.id } });
+
+    return new NextResponse(null, { status: 204 });
+  } catch (e) {
+    const errorMessage = e instanceof Error ? e.message : 'Unknown error occured';
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
+  }
+}
