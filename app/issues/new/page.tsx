@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { TextField, Button, Text } from '@radix-ui/themes';
-import { FieldValue, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Callout } from '@radix-ui/themes';
