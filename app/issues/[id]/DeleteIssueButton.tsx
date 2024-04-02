@@ -1,6 +1,6 @@
-import { Button } from '@radix-ui/themes';
-import Link from 'next/link';
-import { BsPencilSquare } from 'react-icons/bs';
+'use client';
+
+import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 
 interface DeleteIssueButtonProps {
   issueId: number;
@@ -8,10 +8,27 @@ interface DeleteIssueButtonProps {
 
 function DeleteIssueButton({ issueId }: DeleteIssueButtonProps) {
   return (
-    <Button color='red'>
-      <BsPencilSquare />
-      <Link href={`/issues/${issueId}/delete`}>Delete Issue</Link>
-    </Button>
+    <AlertDialog.Root>
+      <AlertDialog.Trigger>
+        <Button color='red'>Delete Issue</Button>
+      </AlertDialog.Trigger>
+      <AlertDialog.Content>
+        <AlertDialog.Title>Confirm deletion</AlertDialog.Title>
+        <AlertDialog.Description>
+          Are you sure you want to delete this issue? This action cannot be undone.
+        </AlertDialog.Description>
+        <Flex mt='4' gap='3'>
+          <AlertDialog.Cancel>
+            <Button color='gray' variant='soft'>
+              Cancel
+            </Button>
+          </AlertDialog.Cancel>
+          <AlertDialog.Action>
+            <Button color='red'>Delete issue</Button>
+          </AlertDialog.Action>
+        </Flex>
+      </AlertDialog.Content>
+    </AlertDialog.Root>
   );
 }
 
