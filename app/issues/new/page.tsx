@@ -1,16 +1,14 @@
 'use client';
 
+import { ErrorMessage, Spinner } from '@/app/components';
+import { createIssueSchema } from '@/app/validationSchemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Callout, TextField } from '@radix-ui/themes';
 import dynamic from 'next/dynamic';
-import { TextField, Button, Text } from '@radix-ui/themes';
-import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Callout } from '@radix-ui/themes';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { createIssueSchema } from '@/app/validationSchemas';
-import ErrorMessage from '@/app/components/ErrorMessage';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import Spinner from '@/app/components/Spinner';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
