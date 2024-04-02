@@ -33,10 +33,17 @@ function IssueForm({ issue }: IssueFormProps) {
   const handleFormOnSubmit = handleSubmit(async (data) => {
     try {
       setIsSubmitting(true);
-
-      const response = await fetch('/api/issues', { method: 'post', body: JSON.stringify(data) });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      const body = JSON.stringify(data);
+      if (issue) {
+        const response = await fetch(`/api/issues/${issue.id}`, { method: 'PATCH', body });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      } else {
+        const response = await fetch('/api/issues', { method: 'POST', body });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
       }
       router.push('/issues');
       router.refresh();
@@ -61,8 +68,7 @@ function IssueForm({ issue }: IssueFormProps) {
       <Editor name='description' defaultValue={issue?.description} control={control} placeholder='Description' />
       <ErrorMessage>{errors.description?.message}</ErrorMessage>
       <Button disabled={isSubmitting}>
-        Submit new issue
-        {isSubmitting && <Spinner />}
+        {issue ? 'Update issue' : 'Submit new issue'} {isSubmitting && <Spinner />}
       </Button>
     </form>
   );
