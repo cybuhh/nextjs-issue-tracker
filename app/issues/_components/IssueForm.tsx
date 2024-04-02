@@ -1,19 +1,17 @@
 'use client';
 
 import { ErrorMessage, Spinner } from '@/app/components';
+import Editor from '@/app/components/EditorController';
 import { issueSchema } from '@/app/validationSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
 import { Button, Callout, TextField } from '@radix-ui/themes';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 type IssueFormData = z.infer<typeof issueSchema>;
-
-const Editor = dynamic(() => import('@/app/components/EditorController'), { ssr: false });
 
 interface IssueFormProps {
   issue?: Issue;
