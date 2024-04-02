@@ -38,4 +38,7 @@ async function IssuesPage() {
   );
 }
 
+export const dynamic = 'force-dynamic';
+// export const revalidate = 0; // same as above
+
 export default IssuesPage;
