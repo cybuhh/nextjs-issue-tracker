@@ -35,6 +35,7 @@ function NewIssuePage() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       router.push('/issues');
+      router.refresh();
     } catch (e) {
       setError('An unexpected error occured');
     } finally {
