@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
 import { issueSchema } from '@/app/validationSchemas';
 
-export async function POST(request: NextRequest) {
+interface RouteParams {
+  params: {
+    id: string;
+  };
+}
+
+export async function PATCH(request: NextRequest, { params }: RouteParams) {
   try {
     const body = await request.json();
 
@@ -12,14 +18,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(validation.error.errors, { status: 400 });
     }
 
-    const newIssue = await prisma.issue.create({
+    const issue = await prisma.issue.findUnique({ where: { id: parseInt(params.id) } });
+    if (!issue) {
+      return NextResponse.json({ error: 'Invalid issue' }, { status: 404 });
+    }
+
+    const updatedIssue = await prisma.issue.update({
+      where: { id: issue.id },
       data: {
         title: body.title,
         description: body.description,
       },
     });
 
-    return NextResponse.json(newIssue, { status: 201 });
+    return NextResponse.json(updatedIssue, { status: 200 });
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : 'Unknown error occured';
     return NextResponse.json({ error: errorMessage }, { status: 400 });
