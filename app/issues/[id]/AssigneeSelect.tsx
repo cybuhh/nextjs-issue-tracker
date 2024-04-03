@@ -1,9 +1,10 @@
 'use client';
 
 import { Skeleton } from '@/app/components';
-import { Issue, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { Select } from '@radix-ui/themes';
 import { useQuery } from '@tanstack/react-query';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface AssigneeSelectProps {
   issueId: number;
@@ -27,7 +28,11 @@ function AssigneeSelect({ issueId, assignedToUserId }: AssigneeSelectProps) {
   });
 
   const handleOnValueChange = async (userId: string) => {
-    fetch(`/api/issues/${issueId}`, { method: 'PATCH', body: JSON.stringify({ assignedToUserId: userId }) });
+    try {
+      fetch(`/api/issues/${issueId}`, { method: 'PATCH', body: JSON.stringify({ assignedToUserId: userId }) });
+    } catch (error) {
+      toast.error('Changes could not be saved.');
+    }
   };
 
   if (isLoading) {
@@ -38,20 +43,23 @@ function AssigneeSelect({ issueId, assignedToUserId }: AssigneeSelectProps) {
   }
 
   return (
-    <Select.Root value={assignedToUserId || undefined} onValueChange={handleOnValueChange}>
-      <Select.Trigger placeholder='Assign...' />
-      <Select.Content>
-        <Select.Group>
-          <Select.Label>Suggestions</Select.Label>
-          <Select.Item value={null as unknown as string}>Unassigned</Select.Item>
-          {users?.map((user) => (
-            <Select.Item key={user.id} value={user.id}>
-              {user.name}
-            </Select.Item>
-          ))}
-        </Select.Group>
-      </Select.Content>
-    </Select.Root>
+    <>
+      <Select.Root value={assignedToUserId || undefined} onValueChange={handleOnValueChange}>
+        <Select.Trigger placeholder='Assign...' />
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Suggestions</Select.Label>
+            <Select.Item value={null as unknown as string}>Unassigned</Select.Item>
+            {users?.map((user) => (
+              <Select.Item key={user.id} value={user.id}>
+                {user.name}
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+      <Toaster />
+    </>
   );
 }
 
