@@ -43,7 +43,7 @@ function IssueForm({ issue }: IssueFormProps) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
       }
-      router.push('/issues');
+      router.push('/issues/list');
       router.refresh();
     } catch (e) {
       setError('An unexpected error occured');
