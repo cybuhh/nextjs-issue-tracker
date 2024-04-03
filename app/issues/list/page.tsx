@@ -1,4 +1,4 @@
-import { IssueStatusBadge, Link } from '@/app/components';
+import { IssueStatusBadge, Link, Pagination } from '@/app/components';
 import prisma from '@/prisma/client';
 import { Issue, Status } from '@prisma/client';
 import { Table } from '@radix-ui/themes';
@@ -10,6 +10,7 @@ interface IssuesPageProps {
   searchParams: {
     status: Status;
     orderBy: keyof Issue;
+    page: string;
   };
 }
 
@@ -29,10 +30,18 @@ async function IssuesPage({ searchParams }: IssuesPageProps) {
       }
     : undefined;
 
+  const pageSize = 10;
+  const page = parseInt(searchParams.page) || 1;
+  const where = { status };
+
   const issues = await prisma.issue.findMany({
-    where: { status },
+    where,
     orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
+
+  const issueCount = await prisma.issue.count({ where });
 
   return (
     <div className='space-y-3'>
@@ -65,6 +74,7 @@ async function IssuesPage({ searchParams }: IssuesPageProps) {
           ))}
         </Table.Body>
       </Table.Root>
+      <Pagination itemCount={issueCount} pageSize={pageSize} currentPage={page} />
     </div>
   );
 }
