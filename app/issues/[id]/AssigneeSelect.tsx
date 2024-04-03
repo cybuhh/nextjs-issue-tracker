@@ -12,20 +12,7 @@ interface AssigneeSelectProps {
 }
 
 function AssigneeSelect({ issueId, assignedToUserId }: AssigneeSelectProps) {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<ReadonlyArray<User>>({
-    queryKey: ['users'],
-    queryFn: async () => {
-      const result = await fetch('/api/users');
-      const data = await result.json();
-      return data;
-    },
-    staleTime: 60 * 1000, // 60s
-    retry: 3,
-  });
+  const { data: users, error, isLoading } = useUsers();
 
   const handleOnValueChange = async (userId: string) => {
     try {
@@ -61,6 +48,19 @@ function AssigneeSelect({ issueId, assignedToUserId }: AssigneeSelectProps) {
       <Toaster />
     </>
   );
+}
+
+function useUsers() {
+  return useQuery<ReadonlyArray<User>>({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const result = await fetch('/api/users');
+      const data = await result.json();
+      return data;
+    },
+    staleTime: 60 * 1000, // 60s
+    retry: 3,
+  });
 }
 
 export default AssigneeSelect;
