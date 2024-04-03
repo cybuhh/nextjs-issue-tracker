@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import EditIssueButton from './EditIssueButton';
 import DeleteIssueButton from './DeleteIssueButton';
 import IssueDetails from './IssueDetails';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/app/auth/authOptions';
 
 interface IssueDetailPageProps {
   params: {
@@ -11,7 +13,9 @@ interface IssueDetailPageProps {
   };
 }
 
-async function page({ params: { id } }: IssueDetailPageProps) {
+async function IssueDetailPage({ params: { id } }: IssueDetailPageProps) {
+  const session = await getServerSession(authOptions);
+
   const issueId = parseInt(id);
   if (typeof issueId !== 'number') {
     notFound();
@@ -28,14 +32,16 @@ async function page({ params: { id } }: IssueDetailPageProps) {
       <Box className='md:col-span-4'>
         <IssueDetails issue={issue} />
       </Box>
-      <Box>
-        <Flex direction='column' gap='5'>
-          <EditIssueButton issueId={issue.id} />
-          <DeleteIssueButton issueId={issue.id} />
-        </Flex>
-      </Box>
+      {session && (
+        <Box>
+          <Flex direction='column' gap='5'>
+            <EditIssueButton issueId={issue.id} />
+            <DeleteIssueButton issueId={issue.id} />
+          </Flex>
+        </Box>
+      )}
     </Grid>
   );
 }
 
-export default page;
+export default IssueDetailPage;
