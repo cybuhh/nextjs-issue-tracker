@@ -1,11 +1,16 @@
 'use client';
 
 import { Skeleton } from '@/app/components';
-import { User } from '@prisma/client';
+import { Issue, User } from '@prisma/client';
 import { Select } from '@radix-ui/themes';
 import { useQuery } from '@tanstack/react-query';
 
-function AssigneeSelect() {
+interface AssigneeSelectProps {
+  issueId: number;
+  assignedToUserId: string | null;
+}
+
+function AssigneeSelect({ issueId, assignedToUserId }: AssigneeSelectProps) {
   const {
     data: users,
     error,
@@ -21,6 +26,10 @@ function AssigneeSelect() {
     retry: 3,
   });
 
+  const handleOnValueChange = async (userId: string) => {
+    fetch(`/api/issues/${issueId}`, { method: 'PATCH', body: JSON.stringify({ assignedToUserId: userId }) });
+  };
+
   if (isLoading) {
     return <Skeleton />;
   }
@@ -29,11 +38,12 @@ function AssigneeSelect() {
   }
 
   return (
-    <Select.Root defaultValue='apple'>
+    <Select.Root value={assignedToUserId || undefined} onValueChange={handleOnValueChange}>
       <Select.Trigger placeholder='Assign...' />
       <Select.Content>
         <Select.Group>
           <Select.Label>Suggestions</Select.Label>
+          <Select.Item value={null as unknown as string}>Unassigned</Select.Item>
           {users?.map((user) => (
             <Select.Item key={user.id} value={user.id}>
               {user.name}
