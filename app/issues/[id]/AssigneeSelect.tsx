@@ -1,26 +1,38 @@
 'use client';
 
+import { User } from '@prisma/client';
 import { Select } from '@radix-ui/themes';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 function AssigneeSelect() {
+  const [users, setUsers] = useState<ReadonlyArray<User>>([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const result = await fetch('/api/users');
+      const data = await result.json();
+      setUsers(data);
+    };
+
+    fetchUsers();
+  }, []);
+
   return (
-    <Select.Root defaultValue='apple'>
-      <Select.Trigger placeholder='Assign...' />
-      <Select.Content>
-        <Select.Group>
-          <Select.Label>Suggestions</Select.Label>
-          <Select.Item value='1'>Orange</Select.Item>
-          <Select.Item value='2'>Apple</Select.Item>
-        </Select.Group>
-        <Select.Separator />
-        <Select.Group>
-          <Select.Label>Vegetables</Select.Label>
-          <Select.Item value='carrot'>Carrot</Select.Item>
-          <Select.Item value='potato'>Potato</Select.Item>
-        </Select.Group>
-      </Select.Content>
-    </Select.Root>
+    users && (
+      <Select.Root defaultValue='apple'>
+        <Select.Trigger placeholder='Assign...' />
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Suggestions</Select.Label>
+            {users.map((user) => (
+              <Select.Item key={user.id} value={user.id}>
+                {user.name}
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+    )
   );
 }
 
