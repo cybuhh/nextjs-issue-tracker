@@ -1,10 +1,10 @@
 import { IssueStatusBadge, Link } from '@/app/components';
 import prisma from '@/prisma/client';
-import { Table } from '@radix-ui/themes';
-import IssueActions from './IssueActions';
 import { Issue, Status } from '@prisma/client';
+import { Table } from '@radix-ui/themes';
 import NextLink from 'next/link';
 import { FaArrowUp } from 'react-icons/fa';
+import IssueActions from './IssueActions';
 
 interface IssuesPageProps {
   searchParams: {
@@ -23,8 +23,16 @@ async function IssuesPage({ searchParams }: IssuesPageProps) {
   ];
 
   const status = validStatuses.includes(searchParams.status) ? searchParams.status : undefined;
+  const orderBy = columns.map((column) => column.value).includes(searchParams.orderBy)
+    ? {
+        [searchParams.orderBy]: 'asc',
+      }
+    : undefined;
 
-  const issues = await prisma.issue.findMany({ where: { status } });
+  const issues = await prisma.issue.findMany({
+    where: { status },
+    orderBy,
+  });
 
   return (
     <div className='space-y-3'>
