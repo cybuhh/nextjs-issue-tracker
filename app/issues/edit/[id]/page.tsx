@@ -29,3 +29,12 @@ async function EditIssuePage({ params: { id } }: EditIssuePageProps) {
 }
 
 export default EditIssuePage;
+
+export async function generateMetadata({ params: { id } }: EditIssuePageProps) {
+  const issue = await prisma.issue.findUnique({ where: { id: parseInt(id) } });
+
+  return {
+    title: issue?.title,
+    description: 'Edit issue ' + issue?.id,
+  };
+}
