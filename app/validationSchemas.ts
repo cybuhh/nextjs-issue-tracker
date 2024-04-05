@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { Status } from '@prisma/client';
+
 export const issueSchema = z.object({
   title: z
     .string({
@@ -31,4 +33,5 @@ export const patchIssueSchema = z.object({
     .max(65535)
     .optional(),
   assignedToUserId: z.string().min(1, 'AssignedToUserUd is required').max(255).nullable().optional(),
+  status: z.nativeEnum(Status).optional(),
 });
