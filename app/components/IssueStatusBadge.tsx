@@ -8,7 +8,7 @@ interface IssueStatusBadge {
 
 export const statusMap: Record<Status, { label: string; color: 'red' | 'violet' | 'green' }> = {
   OPEN: { label: 'Open', color: 'red' },
-  IN_PROGRESS: { label: 'In Progress', color: 'violet' },
+  IN_PROGRESS: { label: 'In progress', color: 'violet' },
   CLOSED: { label: 'Closed', color: 'green' },
 };
 
