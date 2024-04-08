@@ -12,7 +12,8 @@
     "prisma-format": "prisma format",
     "prettier": "prettier -c {app,prisma}/**/*.ts",
     "prettier:fix": "prettier -w {app,prisma}/**/*.ts",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:run:component": "cypress run --component"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
