@@ -35,3 +35,13 @@
 //     }
 //   }
 // }
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      getByTestId(testId: string): Chainable<JQuery<HTMLElement>>;
+    }
+  }
+}
+
+import getByTestId from './commands/getByTestId';
+Cypress.Commands.add('getByTestId', getByTestId);
