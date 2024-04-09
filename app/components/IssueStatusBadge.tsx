@@ -14,7 +14,7 @@ export const statusMap: Record<Status, { label: string; color: 'red' | 'violet' 
 
 function IssueStatusBadge({ status }: IssueStatusBadge) {
   return (
-    <Badge color={statusMap[status].color} data-test-id='status-badge'>
+    <Badge color={statusMap[status].color} data-testid='status-badge'>
       {statusMap[status].label}
     </Badge>
   );
