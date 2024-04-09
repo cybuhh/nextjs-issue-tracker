@@ -13,7 +13,9 @@
     "prettier": "prettier -c {app,prisma}/**/*.ts",
     "prettier:fix": "prettier -w {app,prisma}/**/*.ts",
     "cypress:open": "cypress open",
-    "cypress:run:component": "cypress run --component"
+    "cypress:run:component": "cypress run --component",
+    "playwright": "npx playwright test",
+    "playwright:ui": "npx playwright test --ui"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -40,6 +42,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.43.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
