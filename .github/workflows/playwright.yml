@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     env:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5433/issue-tracker"
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5433/issue-tracker
     timeout-minutes: 60
     runs-on: ubuntu-latest
     services:
