@@ -2,7 +2,7 @@
 
 import { statusMap } from '@/app/components/IssueStatusBadge';
 import { Status } from '@prisma/client';
-import { Select } from '@radix-ui/themes';
+import { Badge, Select } from '@radix-ui/themes';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -33,8 +33,8 @@ function StatusSelect({ issueId, status }: StatusSelectProps) {
           <Select.Group>
             <Select.Label>Status</Select.Label>
             {statusList.map((i) => (
-              <Select.Item key={i} value={i} color={statusMap[i].color}>
-                {statusMap[i].label}
+              <Select.Item key={i} value={i}>
+                <Badge color={statusMap[i].color}> {statusMap[i].label}</Badge>
               </Select.Item>
             ))}
           </Select.Group>
