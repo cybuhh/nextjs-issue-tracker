@@ -1,5 +1,5 @@
 {
-  "name": "boo",
+  "name": "nextjs-issue-tracker",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,12 +8,13 @@
     "start": "next start",
     "lint": "next lint",
     "ts-watch": "tsc -w",
-    "prisma-migrate": "prisma migrate dev",
-    "prisma-format": "prisma format",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:format": "prisma format",
     "prettier": "prettier -c {app,prisma}/**/*.ts",
     "prettier:fix": "prettier -w {app,prisma}/**/*.ts",
     "cypress:open": "cypress open",
     "cypress:run:component": "cypress run --component",
+    "db:import": "tsc tests-e2e/initDb.ts && node tests-e2e/initDb.js ; rm tests-e2e/initDb.js prisma/client.js",
     "playwright": "npx playwright test",
     "playwright:ui": "npx playwright test --ui"
   },
@@ -44,7 +45,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.43.0",
-    "@types/node": "^20",
+    "@types/node": "^20.12.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
