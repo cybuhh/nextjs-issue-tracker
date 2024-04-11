@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: Static check
 on:
   push:
     branches: [main, master]
