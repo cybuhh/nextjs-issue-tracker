@@ -14,7 +14,7 @@ export default function ErrorMessage<T extends Message | FieldError | FieldError
   }
 
   return (
-    <Text color='red' as='p'>
+    <Text color='red' as='p' data-testid='error-message'>
       {children}
     </Text>
   );
