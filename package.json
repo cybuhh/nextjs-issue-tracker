@@ -13,7 +13,7 @@
     "prisma:format": "prisma format",
     "prettier": "prettier -c {app,prisma}/**/*.ts",
     "prettier:fix": "prettier -w {app,prisma}/**/*.ts",
-    "cypress:open": "cypress open",
+    "cypress:open": "cypress open --component -b chrome",
     "cypress:run:component": "cypress run --component",
     "cypress:report:merge": "mochawesome-merge cypress/results/mochawesome*.json > cypress/results/mochawesome-bundle.json",
     "cypress:report:generate": "marge cypress/results/mochawesome-bundle.json -o cypress/results/html",
