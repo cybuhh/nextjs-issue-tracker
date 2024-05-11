@@ -31,7 +31,7 @@ function NavLinks() {
 
   const links = [
     { label: 'Dashboard', href: '/' },
-    { label: 'Issues', href: '/issues/list' },
+    { label: 'Issues', href: '/issues' },
   ];
 
   function getLinkClassNames(href: string) {

@@ -1,12 +1,13 @@
 import { test, expect } from '@playwright/test';
 
-test('valid titles titles', async ({ page }) => {
+test('valid titles', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/Issue Tracker - Dashbaord/);
 
-  await page.goto('/issues/list');
+  await page.goto('/issues');
   await expect(page).toHaveTitle(/Issue Tracker - Issue list/);
 
+  // disabled since it needs auth
   // await page.goto('/issues/new');
   // await expect(page).toHaveTitle(/Issue Tracker - New issue/);
 });
