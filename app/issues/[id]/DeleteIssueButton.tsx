@@ -21,7 +21,7 @@ function DeleteIssueButton({ issueId }: DeleteIssueButtonProps) {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      router.push('/issues/list');
+      router.push('/issues');
       router.refresh();
     } catch (error) {
       setError(true);
