@@ -28,3 +28,17 @@ test('block pages that required auth', async ({ page, request }) => {
   await page.goto('/issues/1/edit');
   expect(page.url()).toContain('/auth/signin');
 });
+
+test('access pages after authorization after authentication', async ({ page, request }) => {
+  await page.goto('/api/auth/signin');
+
+  await page.getByLabel('Username').fill('test');
+  await page.getByLabel('Password').fill('test');
+  await page.getByRole('button', { name: 'Sign in with Credentials' }).click();
+
+  await page.goto('/issues/new');
+  await expect(page).toHaveTitle('Issue Tracker - New issue');
+
+  await page.goto('/issues/1/edit');
+  await expect(page).toHaveTitle('Application Crashes on Android Devices');
+});
