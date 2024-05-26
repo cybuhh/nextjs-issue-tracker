@@ -1,8 +1,24 @@
+'use client';
 import { Skeleton } from '@/app/components';
 import { Table } from '@radix-ui/themes';
 import IssueActions from './IssueActions';
+import { usePathname } from 'next/navigation';
+import LoadingNew from './new/loading';
+import LoadingDetails from './[id]/loading';
+import LoadingEdit from './[id]/edit/loading';
 
 function LoadingIssuesPage() {
+  const pathname = usePathname();
+  if (pathname === '/issues/new') {
+    return <LoadingNew />;
+  }
+  if (pathname.match(/^\/issues\/\d$/)) {
+    return <LoadingDetails />;
+  }
+  if (pathname.match(/^\/issues\/\d\/edit$/)) {
+    return <LoadingEdit />;
+  }
+
   const issues = [1, 2, 3, 4, 5];
 
   return (
