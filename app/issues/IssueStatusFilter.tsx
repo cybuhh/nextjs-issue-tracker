@@ -25,7 +25,7 @@ function IssueStatusFilter() {
     }
 
     const query = params.size ? '?' + params.toString() : '';
-    router.push(`/issues/list${query}`);
+    router.push(`/issues${query}`);
   };
 
   return (
