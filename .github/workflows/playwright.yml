@@ -9,6 +9,7 @@ jobs:
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/issue-tracker
       NEXTAUTH_SECRET: mock-secrtet
+      MOCK_AUTH: true
     timeout-minutes: 5
     runs-on: ubuntu-latest
     services:
